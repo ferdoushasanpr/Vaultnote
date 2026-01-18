@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vaultnote/screens/pin_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const ExoticNotesApp());
 }
 
@@ -11,7 +13,7 @@ class ExoticNotesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Vault Notes',
+      title: 'Exotic Notes',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,
@@ -37,11 +39,34 @@ class ExoticNotesApp extends StatelessWidget {
   }
 }
 
-class AuthCheck extends StatelessWidget {
+class AuthCheck extends StatefulWidget {
   const AuthCheck({super.key});
 
   @override
+  State<AuthCheck> createState() => _AuthCheckState();
+}
+
+class _AuthCheckState extends State<AuthCheck> {
+  bool? hasPin;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkPinStatus();
+  }
+
+  _checkPinStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      hasPin = prefs.containsKey('user_pin');
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return PinScreen();
+    if (hasPin == null)
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    // If PIN doesn't exist, go to Setup. If it does, go to Login.
+    return PinScreen(isSetup: !hasPin!);
   }
 }
