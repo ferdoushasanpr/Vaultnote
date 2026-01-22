@@ -26,4 +26,12 @@ class NoteProvider with ChangeNotifier {
       debugPrint("Error loading notes: $e");
     }
   }
+
+  Future<void> _saveToFile() async {
+    final file = await _localFile;
+    final String jsonString = json.encode(
+      _notes.map((n) => n.toJson()).toList(),
+    );
+    await file.writeAsString(jsonString);
+  }
 }
