@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vaultnote/screens/home_screen.dart';
 
 class PinScreen extends StatefulWidget {
   final bool isSetup;
@@ -43,7 +44,10 @@ class _PinScreenState extends State<PinScreen> {
   }
 
   void _navigateToHome() {
-    print("Pin Verifies");
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const HomeScreen()),
+    );
   }
 
   @override
