@@ -40,4 +40,13 @@ class NoteProvider with ChangeNotifier {
     await _saveToFile();
     notifyListeners();
   }
+
+  Future<void> updateNote(Note updatedNote) async {
+    final index = _notes.indexWhere((n) => n.id == updatedNote.id);
+    if (index != -1) {
+      _notes[index] = updatedNote;
+      await _saveToFile();
+      notifyListeners();
+    }
+  }
 }
