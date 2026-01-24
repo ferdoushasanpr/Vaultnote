@@ -34,4 +34,10 @@ class NoteProvider with ChangeNotifier {
     );
     await file.writeAsString(jsonString);
   }
+
+  Future<void> addNote(Note note) async {
+    _notes.add(note);
+    await _saveToFile();
+    notifyListeners();
+  }
 }
