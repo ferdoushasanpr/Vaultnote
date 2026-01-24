@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:vaultnote/models/note.dart';
 
 class NoteProvider with ChangeNotifier {
@@ -48,6 +49,16 @@ class NoteProvider with ChangeNotifier {
       _notes[index] = updatedNote;
       await _saveToFile();
       notifyListeners();
+    }
+  }
+
+  // UPDATED: Modern share_plus syntax
+  Future<void> exportNotes() async {
+    final file = await _localFile;
+    if (await file.exists()) {
+      await SharePlus.instance.share(
+        ShareParams(text: 'My Exotic Notes Backup', files: [XFile(file.path)]),
+      );
     }
   }
 
