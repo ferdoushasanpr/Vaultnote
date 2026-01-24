@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:vaultnote/models/note.dart';
 
 class NoteProvider with ChangeNotifier {
@@ -47,6 +48,30 @@ class NoteProvider with ChangeNotifier {
       _notes[index] = updatedNote;
       await _saveToFile();
       notifyListeners();
+    }
+  }
+
+  Future<bool> importNotes() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['json'],
+      );
+
+      if (result != null && result.files.single.path != null) {
+        File selectedFile = File(result.files.single.path!);
+        String content = await selectedFile.readAsString();
+        List<dynamic> jsonList = json.decode(content);
+
+        _notes = jsonList.map((j) => Note.fromJson(j)).toList();
+        await _saveToFile();
+        notifyListeners();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      debugPrint("Import failed: $e");
+      return false;
     }
   }
 }
