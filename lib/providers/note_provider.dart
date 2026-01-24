@@ -52,6 +52,17 @@ class NoteProvider with ChangeNotifier {
     }
   }
 
+  // UPDATED: Returns index for the Undo feature
+  Future<int> deleteNote(String id) async {
+    int index = _notes.indexWhere((n) => n.id == id);
+    if (index != -1) {
+      _notes.removeAt(index);
+      await _saveToFile();
+      notifyListeners();
+    }
+    return index;
+  }
+
   // UPDATED: Modern share_plus syntax
   Future<void> exportNotes() async {
     final file = await _localFile;
