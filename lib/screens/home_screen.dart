@@ -34,6 +34,24 @@ class HomeScreen extends StatelessWidget {
               title: const Text("Export JSON (Backup)"),
               onTap: () => noteProvider.exportNotes(),
             ),
+            ListTile(
+              leading: const Icon(
+                Icons.download_for_offline,
+                color: Color(0xFF00FFC8),
+              ),
+              title: const Text("Import JSON (Restore)"),
+              onTap: () async {
+                bool success = await noteProvider.importNotes();
+                if (success && context.mounted) {
+                  Navigator.pop(context); // Close drawer
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Notes synchronized successfully!"),
+                    ),
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),
