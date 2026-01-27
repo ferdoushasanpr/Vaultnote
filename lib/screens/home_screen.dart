@@ -16,6 +16,22 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
+      drawer: Drawer(
+        backgroundColor: const Color(0xFF0D0221),
+        child: ListView(
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(color: Color(0xFF19112E)),
+              child: Center(
+                child: Text(
+                  "DATA MANAGEMENT",
+                  style: TextStyle(color: Color(0xFF00FFC8), letterSpacing: 2),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
       body: noteProvider.notes.isEmpty
           ? const Center(
               child: Text("Your journey begins with a single note..."),
