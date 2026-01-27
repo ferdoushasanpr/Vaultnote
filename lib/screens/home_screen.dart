@@ -29,6 +29,11 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
+            ListTile(
+              leading: const Icon(Icons.upload_file, color: Colors.amberAccent),
+              title: const Text("Export JSON (Backup)"),
+              onTap: () => noteProvider.exportNotes(),
+            ),
           ],
         ),
       ),
