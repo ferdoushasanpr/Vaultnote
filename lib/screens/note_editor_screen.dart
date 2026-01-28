@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vaultnote/models/note.dart';
+import 'package:vaultnote/providers/note_provider.dart';
 
 class NoteEditorScreen extends StatefulWidget {
   final Note? note;
@@ -28,6 +30,25 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
     );
   }
 
+  void _handleSave() {
+    if (_titleController.text.isEmpty) return;
+
+    final noteData = Note(
+      id: widget.note?.id, // Use existing ID if editing
+      title: _titleController.text,
+      location: _locationController.text,
+      content: _contentController.text,
+      createdAt: widget.note?.createdAt ?? DateTime.now(),
+    );
+
+    if (widget.note == null) {
+      context.read<NoteProvider>().addNote(noteData);
+    } else {
+      context.read<NoteProvider>().updateNote(noteData);
+    }
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +62,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
             ),
             onPressed: () {
               if (_isEditing) {
+                _handleSave();
               } else {
                 setState(() => _isEditing = true);
               }
