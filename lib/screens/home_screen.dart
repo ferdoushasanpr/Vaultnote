@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vaultnote/providers/note_provider.dart';
+import 'package:vaultnote/screens/note_editor_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -122,7 +123,12 @@ class HomeScreen extends StatelessWidget {
                           style: const TextStyle(color: Colors.amberAccent),
                         ),
                       ),
-                      onTap: () => {},
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => NoteEditorScreen(note: note),
+                        ),
+                      ),
                     ),
                   ),
                 );
@@ -131,7 +137,10 @@ class HomeScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xFF00FFC8),
         child: const Icon(Icons.add, color: Colors.black),
-        onPressed: () => {},
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const NoteEditorScreen()),
+        ),
       ),
     );
   }
