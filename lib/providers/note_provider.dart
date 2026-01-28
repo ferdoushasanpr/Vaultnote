@@ -63,6 +63,13 @@ class NoteProvider with ChangeNotifier {
     return index;
   }
 
+  // REQUIRED: For the Undo feature
+  Future<void> insertNote(int index, Note note) async {
+    _notes.insert(index, note);
+    await _saveToFile();
+    notifyListeners();
+  }
+
   // UPDATED: Modern share_plus syntax
   Future<void> exportNotes() async {
     final file = await _localFile;
