@@ -80,6 +80,25 @@ class HomeScreen extends StatelessWidget {
                       size: 30,
                     ),
                   ),
+                  onDismissed: (direction) async {
+                    final deletedNote = note;
+                    final provider = context.read<NoteProvider>();
+
+                    final originalIndex = await provider.deleteNote(note.id);
+
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text("Successfully Removed the Note"),
+                          action: SnackBarAction(
+                            label: "UNDO",
+                            onPressed: () =>
+                                provider.insertNote(originalIndex, deletedNote),
+                          ),
+                        ),
+                      );
+                    }
+                  },
                   child: Card(
                     color: const Color(0xFF19112E),
                     shape: RoundedRectangleBorder(
